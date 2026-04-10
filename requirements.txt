@@ -1,0 +1,6 @@
+fastapi[standard]==0.115.6
+sqlalchemy
+yfinance
+PyJWT
+requests
+python-multipart

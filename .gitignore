@@ -1,0 +1,30 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# SQLite databases
+*.db
+*.sqlite3
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE directory / settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Tools and logs
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
+notes.txt
