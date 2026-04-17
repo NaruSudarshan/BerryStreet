@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  Image: local-agent
+  name: local-agent
 
 variables:
   acrName: berrystreetacr
