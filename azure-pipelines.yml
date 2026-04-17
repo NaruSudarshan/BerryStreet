@@ -31,8 +31,9 @@ steps:
     kubectlVersion: 'latest'
 
 # Deploy to AKS
-- script: |
-    echo $(KUBECONFIG) > kubeconfig
-    set KUBECONFIG=kubeconfig
+- powershell: |
+    $env:KUBECONFIG_CONTENT = "$(KUBECONFIG)"
+    $env:KUBECONFIG_CONTENT | Out-File -FilePath kubeconfig -Encoding ascii
+    $env:KUBECONFIG = "kubeconfig"
     kubectl apply -f k8s/
   displayName: Deploy to AKS
