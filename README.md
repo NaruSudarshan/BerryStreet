@@ -1,79 +1,172 @@
-# Berry Street - Paper Trading Platform 📈
+# 🚀 Berry Street — Cloud-Native Paper Trading Platform
 
-Welcome to **Berry Street**, a robust and blazing fast paper trading backend crafted specifically for the Indian Stock Market. Built with modern Python and FastAPI, this application allows users to simulate stock trading using real-time market data without risking real money.
+A production-grade **FastAPI backend** deployed on **Azure Kubernetes Service (AKS)** with a fully automated **CI/CD pipeline using Azure DevOps**.
 
-## 🚀 Features
+This project demonstrates real-world DevOps practices: containerization, Kubernetes orchestration, private registry usage, and automated deployments.
 
-*   **OAuth Authentication:** Secure user registration and login via JWT tokens.
-*   **Virtual Wallet:** Every new user starts with a ₹1,00,000 INR practice balance.
-*   **Live Market Data:** Fetches real-time stock quotes and historical chart data via `yfinance`.
-*   **Trade Execution:** Buy and sell orders are validated against the user's wallet balance and portfolio holdings.
-*   **Portfolio Management:** Track your current holdings, average buy prices, and overall portfolio performance.
-*   **ACID Compliant:** Powered by SQLAlchemy to ensure transaction integrity (if a trade fails midway, the database rolls back seamlessly).
+---
 
-## 🛠️ Technology Stack
+## 🧠 What This Project Demonstrates
 
-*   **Framework:** FastAPI (High performance, async-ready, built-in Swagger UI)
-*   **Database:** SQLite (Local testing) / SQLAlchemy (ORM)
-*   **Data Validation:** Pydantic
-*   **Market Data:** Yahoo Finance API (`yfinance`)
-*   **Security:** PyJWT & OAuth2
+- End-to-end cloud deployment (AKS)
+- CI/CD automation using Azure DevOps
+- Docker-based containerization
+- Kubernetes deployments & services
+- Private image registry integration (ACR)
+- Real-world debugging (image pull, auth, pipeline issues)
 
-## 📦 Installation & Setup
+---
 
-1. **Clone the repository and enter the directory:**
-   ```bash
-   git clone <repository-url>
-   cd BerryStreet
-   ```
+## 🏗️ System Architecture
 
-2. **Create and activate a virtual environment:**
-   ```bash
-   python -m venv .venv
-   
-   # For Windows:
-   .venv\Scripts\activate
-   # For macOS/Linux:
-   source .venv/bin/activate
-   ```
+```
+           ┌──────────────┐
+           │   GitHub     │
+           └──────┬───────┘
+                  │ (push)
+                  ▼
+        ┌─────────────────────┐
+        │ Azure DevOps CI/CD  │
+        │  - Build Image      │
+        │  - Push to ACR      │
+        │  - Deploy to AKS    │
+        └─────────┬───────────┘
+                  │
+                  ▼
+        ┌─────────────────────┐
+        │ Azure Container     │
+        │ Registry (ACR)      │
+        └─────────┬───────────┘
+                  │
+                  ▼
+        ┌─────────────────────┐
+        │ AKS Cluster         │
+        │  - Pods (FastAPI)   │
+        │  - Service (LB)     │
+        └─────────┬───────────┘
+                  │
+                  ▼
+              🌍 User
+```
 
-3. **Install the dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+---
 
-4. **Start the development server:**
-   ```bash
-   fastapi dev app/main.py
-   ```
-   *Note: Using `fastapi dev` provides hot-reloading out of the box.*
+## ⚙️ Tech Stack
+
+### Backend
+- FastAPI
+- SQLAlchemy
+- SQLite
+- Pydantic
+- yfinance
+
+### DevOps & Cloud
+- Docker
+- Kubernetes (AKS)
+- Azure Container Registry (ACR)
+- Azure DevOps Pipelines
+- Self-hosted agent
+
+---
+
+## 🔄 CI/CD Pipeline Flow
+
+1. Push code to GitHub  
+2. Pipeline triggers automatically  
+3. Docker image is built  
+4. Image is pushed to ACR  
+5. Kubernetes manifests are applied  
+6. AKS updates running pods  
+
+---
+
+## 📦 Core Features
+
+- 🔐 JWT-based authentication  
+- 💰 Virtual trading wallet (₹1,00,000)  
+- 📊 Real-time stock data (yfinance)  
+- 📈 Buy/Sell simulation  
+- 📁 Portfolio tracking  
+- 🔁 Transaction-safe operations  
+
+---
+
+## 🐳 Docker Usage
+
+Build image:
+
+```
+docker build -t berrystreet-api .
+```
+
+Run container:
+
+```
+docker run -p 8000:8000 berrystreet-api
+```
+
+---
+
+## ☸️ Kubernetes Deployment
+
+```
+kubectl apply -f k8s/
+```
+
+Verify:
+
+```
+kubectl get pods
+kubectl get svc
+```
+
+---
+
+## 📸 Screenshots
+
+### ✅ CI/CD Pipeline
+![Pipeline](screenshots/pipeline.jpeg)
+
+### ✅ AKS Deployment
+![AKS](screenshots/aks.jpeg)
+
+### ✅ Service Exposure
+![Service](screenshots/service.jpeg)
+
+### ✅ Container Registry
+![ACR](Screenshots\container-registery.jpeg)
+
+### ✅ Swagger UI
+![Swagger](screenshots/swagger.jpeg)
+
+---
+
+## 🧪 Run Locally
+
+```
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# Linux/macOS
+source .venv/bin/activate
+
+pip install -r requirements.txt
+fastapi dev app/main.py
+```
+
+---
 
 ## 📖 API Documentation
 
-Once the server is running, FastAPI automatically generates interactive API documentation. 
-Navigate to your browser to view and test endpoints directly:
+- `/docs` → Swagger UI  
 
-*   **Swagger UI (Interactive):** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-*   **ReDoc:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+---
 
-## 🧪 Testing the Flow
+## ⚠️ Note
 
-A `test_script.py` is included in the project root to automate an end-to-end user flow:
-1. It registers/authenticates a test user.
-2. Fetches a market quote (e.g., RELIANCE.NS).
-3. Executes a BUY order.
-4. Executes a SELL order.
-5. Prints the finalized portfolio holdings.
+Azure resources were cleaned up after development to avoid costs.  
+The project remains fully reproducible using the provided configuration.
 
-Run the script locally while the server is running:
-```bash
-python test_script.py
-```
-
-## 🏗️ Architecture Note
-
-This project is structured using best practices to separate concerns:
-*   `models.py`: Database table definitions (SQLAlchemy).
-*   `schemas.py`: Data validation blueprints (Pydantic).
-*   `database.py`: DB Connection, Engine, and Session Dependency injection (`get_db`).
-*   `routers/`: Modular route handlers for `/users`, `/market`, `/trading`, and `/portfolio`.
+---
