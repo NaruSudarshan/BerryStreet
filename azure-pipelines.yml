@@ -32,7 +32,7 @@ steps:
 
 # Deploy to AKS
 - script: |
-    echo "$(KUBECONFIG)" > kubeconfig
-    export KUBECONFIG=kubeconfig
+    echo $(KUBECONFIG) > kubeconfig
+    set KUBECONFIG=kubeconfig
     kubectl apply -f k8s/
   displayName: Deploy to AKS
