@@ -31,9 +31,13 @@ steps:
     kubectlVersion: 'latest'
 
 # Deploy to AKS
+- task: DownloadSecureFile@1
+  name: kubeconfig
+  inputs:
+    secureFile: 'kubeconfig.yaml'
+
 - powershell: |
-    $env:KUBECONFIG_CONTENT = "$(KUBECONFIG)"
-    $env:KUBECONFIG_CONTENT | Out-File -FilePath kubeconfig -Encoding ascii
-    $env:KUBECONFIG = "kubeconfig"
+    $env:KUBECONFIG = "$(kubeconfig.secureFilePath)"
+    kubectl get nodes
     kubectl apply -f k8s/
   displayName: Deploy to AKS
