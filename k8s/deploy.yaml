@@ -20,7 +20,7 @@ spec:
       containers:
       - name: berrystreet-container
         # image: berrystreet-api
-        image: berrystreet.azurecr.io/berrystreet-api:latest
+        image: berrystreetacr.azurecr.io/berrystreet-api:latest
         # imagePullPolicy: Never
         ports:
         - containerPort: 8000
