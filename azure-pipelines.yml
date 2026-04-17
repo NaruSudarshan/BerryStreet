@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  name: local-agent
 
 variables:
   acrName: berrystreetacr
@@ -31,8 +31,13 @@ steps:
     kubectlVersion: 'latest'
 
 # Deploy to AKS
-- script: |
-    echo "$(KUBECONFIG)" > kubeconfig
-    export KUBECONFIG=kubeconfig
+- task: DownloadSecureFile@1
+  name: kubeconfig
+  inputs:
+    secureFile: 'kubeconfig.yaml'
+
+- powershell: |
+    $env:KUBECONFIG = "$(kubeconfig.secureFilePath)"
+    kubectl get nodes
     kubectl apply -f k8s/
   displayName: Deploy to AKS
