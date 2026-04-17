@@ -1,0 +1,38 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  acrName: berrystreetacr
+  imageName: berrystreet-api
+
+steps:
+
+# Build Docker image
+- script: |
+    docker build -t $(acrName).azurecr.io/$(imageName):latest .
+  displayName: Build Docker Image
+
+# Login to ACR
+- script: |
+    echo $(ACR_PASSWORD) | docker login $(acrName).azurecr.io -u $(ACR_USERNAME) --password-stdin
+  displayName: Login to ACR
+
+# Push image to ACR
+- script: |
+    docker push $(acrName).azurecr.io/$(imageName):latest
+  displayName: Push Image to ACR
+
+# Install kubectl
+- task: KubectlInstaller@0
+  inputs:
+    kubectlVersion: 'latest'
+
+# Deploy to AKS
+- script: |
+    echo "$(KUBECONFIG)" > kubeconfig
+    export KUBECONFIG=kubeconfig
+    kubectl apply -f k8s/
+  displayName: Deploy to AKS
