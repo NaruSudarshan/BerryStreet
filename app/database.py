@@ -1,8 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+import os
+# from dotenv import load_dotenv
+
+# load_dotenv()
 
 # 1. The Database URL (SQLite creates a local file named berry_street.db)
-SQLALCHEMY_DATABASE_URL = "sqlite:///./berry_street.db"
+SQLALCHEMY_DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL","sqlite:///./berry_street.db")
 
 # 2. The Engine (The actual connection to the database)
 # check_same_thread=False is a specific requirement for SQLite in FastAPI

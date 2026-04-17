@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import market, users, trading, portfolio
@@ -7,6 +10,7 @@ from app import models
 # CRITICAL LINE: This looks at models.py and creates the actual SQLite tables.
 # It must come BEFORE the app = FastAPI() initialization.
 models.Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI(
     title="Berry Street", 
