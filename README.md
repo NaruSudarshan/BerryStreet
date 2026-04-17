@@ -134,7 +134,7 @@ kubectl get svc
 ![Service](screenshots/service.jpeg)
 
 ### ✅ Container Registry
-![ACR](Screenshots\container-registery.jpeg)
+![ACR](screenshots\container-registery.jpeg)
 
 ### ✅ Swagger UI
 ![Swagger](screenshots/swagger.jpeg)
